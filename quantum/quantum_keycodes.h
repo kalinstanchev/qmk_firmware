@@ -550,7 +550,10 @@ enum quantum_keycodes {
     JS_BUTTON_MAX = JS_BUTTON31,
 
     // always leave at the end
-    SAFE_RANGE
+    SAFE_RANGE,
+    SAFE_LUL,
+    SAFE_MUCHATECLA,
+    SAFE_OJETE
 };
 
 // Ability to use mods in layouts

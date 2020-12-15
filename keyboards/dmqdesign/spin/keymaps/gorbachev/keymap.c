@@ -1,18 +1,6 @@
-/* Copyright 2019-2020 DMQ Design
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+#include <time.h>
+#include <string.h>
+
 #include QMK_KEYBOARD_H
 
 enum layers {
@@ -20,40 +8,44 @@ enum layers {
     _RGB,
     _MACRO
 };
-
 enum custom_keycodes {
     HELLO_WORLD = SAFE_RANGE,
+    LUL = SAFE_LUL,
+    MUCHATECLA = SAFE_MUCHATECLA
 };
-
 //The below layers are intentionally empty in order to give a good starting point for how to configure multiple layers.
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_NUMPAD] = LAYOUT(/* Base */
-                KC_7, KC_8, KC_9, TO(_NUMPAD),
-                KC_4, KC_5, KC_6, TO(_RGB),
-                KC_1, KC_2, KC_3, TO(_MACRO),
-                KC_0, KC_DOT, KC_ENTER
+                KC_KP_7, KC_KP_8, KC_KP_9, TO(_NUMPAD),
+                KC_KP_4, KC_KP_5, KC_KP_6, TO(_RGB),
+                KC_KP_1, KC_KP_2, KC_KP_3, TO(_MACRO),
+                KC_KP_0, KC_KP_DOT, KC_KP_ENTER
                 ),
-
-    [_RGB] = LAYOUT(/* Base */
-                RGB_HUI,  RGB_SAI, RGB_VAI, KC_TRNS,
-                RGB_HUD,  RGB_SAD, RGB_VAD, KC_TRNS,
-                KC_NO,    KC_NO,   KC_NO,   KC_TRNS,
+    [_RGB] = LAYOUT(/* Base: First key reset SPIN */
+                RESET, KC_NO, KC_NO, KC_TRNS,
+                KC_NO, KC_NO, KC_NO, KC_TRNS,
+                KC_NO, KC_NO, KC_NO, KC_TRNS,
                 RGB_RMOD, RGB_TOG, RGB_MOD
                 ),
 
     [_MACRO] = LAYOUT(/* Base */
-                HELLO_WORLD, KC_NO, KC_NO, KC_TRNS,
-                KC_NO, KC_NO, KC_NO, KC_TRNS,
-                KC_NO, KC_NO, KC_NO, KC_TRNS,
-                KC_NO, KC_NO, KC_NO
+                LUL, MUCHATECLA, KC_NO, KC_TRNS,
+                KC_F19, KC_F20, KC_F21, KC_TRNS,
+                KC_F16, KC_F17, KC_F18, KC_TRNS,
+                KC_F13, KC_F14, KC_F15
                 )
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case HELLO_WORLD:
+        case LUL:
             if (record->event.pressed) {
-                SEND_STRING("Hello, world!");
+                SEND_STRING("LUL ");
+            }
+            break;
+        case MUCHATECLA:
+            if (record->event.pressed) {
+                SEND_STRING("uryftwMUCHA uryftwTECLA ");
             }
             break;
     }
@@ -66,9 +58,11 @@ void encoder_update_user(uint8_t index, bool clockwise) {
         switch (get_highest_layer(layer_state)) {     //break each encoder update into a switch statement for the current layer
             case _NUMPAD:
                 if (clockwise) {
-                    tap_code(KC_DOWN);
-                } else {
+                    // Key code Arrow Down
                     tap_code(KC_UP);
+                } else {
+                    // Key code Arrow UP
+                    tap_code(KC_DOWN);
                 }
                 break;
             case _RGB:
@@ -80,8 +74,12 @@ void encoder_update_user(uint8_t index, bool clockwise) {
                 break;
             case _MACRO:
                 if (clockwise) {
+                    // Media forward
+                    tap_code(KC_MFFD);
                     break;
                 } else {
+                    // Media rewind
+                    tap_code(KC_MRWD);
                     break;
                 }
                 break;
@@ -90,8 +88,10 @@ void encoder_update_user(uint8_t index, bool clockwise) {
         switch (get_highest_layer(layer_state)) {
             case _NUMPAD:
                 if (clockwise) {
+                    // Key press Page Down
                     tap_code(KC_PGDN);
                 } else {
+                    // Key press Page UP
                     tap_code(KC_PGUP);
                 }
                 break;
@@ -104,8 +104,12 @@ void encoder_update_user(uint8_t index, bool clockwise) {
                 break;
             case _MACRO:
                 if (clockwise) {
+                    // Next Song
+                    tap_code(KC_MNXT);
                     break;
                 } else {
+                    // Previous Song
+                    tap_code(KC_MPRV);
                     break;
                 }
                 break;
@@ -114,9 +118,11 @@ void encoder_update_user(uint8_t index, bool clockwise) {
         switch (get_highest_layer(layer_state)) {
             case _NUMPAD:
                 if (clockwise) {
-                    tap_code(KC_VOLU);
+                    // Mouse wheel UP
+                    tap_code(KC_WH_U);
                 } else {
-                    tap_code(KC_VOLD);
+                    // Mouse wheel Down
+                    tap_code(KC_WH_D);
                 }
                 break;
             case _RGB:
@@ -128,8 +134,12 @@ void encoder_update_user(uint8_t index, bool clockwise) {
                 break;
             case _MACRO:
                 if (clockwise) {
+                    // Volume UP
+                    tap_code(KC_VOLU);
                     break;
                 } else {
+                    // Volume Down
+                    tap_code(KC_VOLD);
                     break;
                 }
                 break;
@@ -161,22 +171,21 @@ layer_state_t layer_state_set_user(layer_state_t state) { //This will run every 
 
 #ifdef OLED_DRIVER_ENABLE
 
-static const char *ANIMATION_NAMES[] = {
-	"unknown",
+static const char *ANIMATION_NAMES[] = {"unknown",
 	"static",
 	"breathing I",
 	"breathing II",
 	"breathing III",
 	"breathing IV",
-	"rainbow mood I",
-	"rainbow mood II",
-	"rainbow mood III",
-	"rainbow swirl I",
-	"rainbow swirl II",
-	"rainbow swirl III",
-	"rainbow swirl IV",
-	"rainbow swirl V",
-	"rainbow swirl VI",
+	"rainbow I",
+	"rainbow II",
+	"rainbow III",
+	"rainbow2 I",
+	"rainbow2 II",
+	"rainbow2 III",
+	"rainbow2 IV",
+	"rainbow2 V",
+	"rainbow2 VI",
 	"snake I",
 	"snake II",
 	"snake III",
@@ -187,16 +196,16 @@ static const char *ANIMATION_NAMES[] = {
 	"knight II",
 	"knight III",
 	"christmas",
-	"static gradient I",
-	"static gradient II",
-	"static gradient III",
-	"static gradient IV",
-	"static gradient V",
-	"static gradient VI",
-	"static gradient VII",
-	"static gradient VIII",
-	"static gradient IX",
-	"static gradient X",
+	"static I",
+	"static II",
+	"static III",
+	"static IV",
+	"static V",
+	"static VI",
+	"static VII",
+	"static VIII",
+	"static IX",
+	"static X",
 	"rgb test",
 	"alternating",
 	"twinkle I",
@@ -221,6 +230,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 
 void oled_task_user(void) {
     // Host Keyboard Layer Status
+    // Translate to desired language
     oled_write_P(PSTR("Layer: "), false);
 
     switch (get_highest_layer(layer_state)) {
@@ -243,5 +253,15 @@ void oled_task_user(void) {
 
     oled_write_P(PSTR("Mode: "), false);
     oled_write_ln(rgb_mode_name, false);
+
+    //time_t mytime = time(NULL);
+    //const char * time_str = ctime(&mytime);
+    //time_str[strlen(time_str)-1] = '\0';
+
+    time_t now = time(0);
+    char mbstr[20];
+    strftime(mbstr, 20, "%T", localtime(&now));
+
+    oled_write_ln_P(mbstr , false);
 }
 #endif
