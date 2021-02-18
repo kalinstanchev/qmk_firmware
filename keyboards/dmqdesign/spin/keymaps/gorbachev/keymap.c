@@ -1,5 +1,4 @@
-#include <time.h>
-#include <string.h>
+
 
 #include QMK_KEYBOARD_H
 
@@ -45,7 +44,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case MUCHATECLA:
             if (record->event.pressed) {
-                SEND_STRING("uryftwMUCHA uryftwTECLA ");
+                SEND_STRING("https://shop.kstanchev.com");
             }
             break;
     }
@@ -254,14 +253,7 @@ void oled_task_user(void) {
     oled_write_P(PSTR("Mode: "), false);
     oled_write_ln(rgb_mode_name, false);
 
-    //time_t mytime = time(NULL);
-    //const char * time_str = ctime(&mytime);
-    //time_str[strlen(time_str)-1] = '\0';
+    oled_write_ln("YOUR NAME HERE", false);
 
-    time_t now = time(0);
-    char mbstr[20];
-    strftime(mbstr, 20, "%T", localtime(&now));
-
-    oled_write_ln_P(mbstr , false);
 }
 #endif

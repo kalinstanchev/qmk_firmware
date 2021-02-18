@@ -588,8 +588,7 @@ enum quantum_keycodes {
     // always leave at the end
     SAFE_RANGE,
     SAFE_LUL,
-    SAFE_MUCHATECLA,
-    SAFE_OJETE
+    SAFE_MUCHATECLA
 };
 
 // Ability to use mods in layouts
