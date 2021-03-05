@@ -1,5 +1,3 @@
-
-
 #include QMK_KEYBOARD_H
 
 enum layers {
@@ -9,8 +7,8 @@ enum layers {
 };
 enum custom_keycodes {
     HELLO_WORLD = SAFE_RANGE,
-    LUL = SAFE_LUL,
-    MUCHATECLA = SAFE_MUCHATECLA
+    HELLO_WORLD1,
+    HELLO_WORLD2
 };
 //The below layers are intentionally empty in order to give a good starting point for how to configure multiple layers.
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -28,7 +26,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 ),
 
     [_MACRO] = LAYOUT(/* Base */
-                LUL, MUCHATECLA, KC_NO, KC_TRNS,
+                HELLO_WORLD1, HELLO_WORLD2, KC_NO, KC_TRNS,
                 KC_F19, KC_F20, KC_F21, KC_TRNS,
                 KC_F16, KC_F17, KC_F18, KC_TRNS,
                 KC_F13, KC_F14, KC_F15
@@ -37,14 +35,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LUL:
+        case HELLO_WORLD1:
             if (record->event.pressed) {
-                SEND_STRING("LUL ");
+                SEND_STRING("Enjoy this amazing Macropad! ");
             }
             break;
-        case MUCHATECLA:
+        case HELLO_WORLD2:
             if (record->event.pressed) {
-                SEND_STRING("https://shop.kstanchev.com");
+                SEND_STRING("shop.kstanchev.com");
             }
             break;
     }
