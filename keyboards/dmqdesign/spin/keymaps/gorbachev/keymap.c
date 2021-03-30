@@ -251,7 +251,7 @@ void oled_task_user(void) {
     oled_write_P(PSTR("Mode: "), false);
     oled_write_ln(rgb_mode_name, false);
 
-    oled_write_ln("YOUR NAME HERE", false);
+    oled_write_ln("Joseph", false);
 
 }
 #endif

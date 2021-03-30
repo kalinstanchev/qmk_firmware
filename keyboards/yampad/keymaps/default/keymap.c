@@ -138,6 +138,6 @@ void oled_task_user(void) {
       (uint8_t)(rgblight_config.sat / RGBLIGHT_SAT_STEP),
       (uint8_t)(rgblight_config.val / RGBLIGHT_VAL_STEP));
   oled_write(led_buf, false);
-  oled_write_P(PSTR(" GiR "), false);
+  oled_write_P(PSTR("LOCO!"), false);
 }
 #endif
