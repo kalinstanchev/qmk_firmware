@@ -50,7 +50,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 };
 
-void encoder_update_user(uint8_t index, bool clockwise) {
+bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) { /* First encoder */
         switch (get_highest_layer(layer_state)) {     //break each encoder update into a switch statement for the current layer
             case _NUMPAD:
@@ -142,6 +142,7 @@ void encoder_update_user(uint8_t index, bool clockwise) {
                 break;
         }
     }
+    return true;
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) { //This will run every time the layer is updated
@@ -166,7 +167,7 @@ layer_state_t layer_state_set_user(layer_state_t state) { //This will run every 
     return state;
 }
 
-#ifdef OLED_DRIVER_ENABLE
+#ifdef OLED_ENABLE
 
 static const char *ANIMATION_NAMES[] = {"unknown",
 	"static",
@@ -225,7 +226,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 #endif
 }
 
-void oled_task_user(void) {
+bool oled_task_user(void) {
     // Host Keyboard Layer Status
     // Translate to desired language
     oled_write_P(PSTR("Layer: "), false);
@@ -250,8 +251,6 @@ void oled_task_user(void) {
 
     oled_write_P(PSTR("Mode: "), false);
     oled_write_ln(rgb_mode_name, false);
-
-    oled_write_ln("Joseph", false);
-
+    return false;
 }
 #endif
