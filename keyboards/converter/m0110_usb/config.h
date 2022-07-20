@@ -26,7 +26,6 @@ Ported to QMK by Techsock <info@techsock.com>
 #define DEVICE_VER      0x0101
 #define MANUFACTURER    Apple
 #define PRODUCT         M0110(A)
-#define DESCRIPTION     Converts M0110(A) to USB and/or BT
 
 /* matrix size */
 #define MATRIX_ROWS 14
@@ -42,9 +41,6 @@ Ported to QMK by Techsock <info@techsock.com>
     get_mods() == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_LALT) | MOD_BIT(KC_LGUI)) || \
     get_mods() == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_LALT) | MOD_BIT(KC_LCTL)) \
 )
-
-/* boot magic key */
-#define BOOTMAGIC_KEY_SALT                      KC_M
 
 /* ports */
 #define M0110_CLOCK_PORT        PORTD
